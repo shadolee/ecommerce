@@ -7,7 +7,7 @@ var engine = require('ejs-mate'); // ejs extension
 var session = require('express-session'); // session ID is an encrypted signature, session management module designed to help you manage user sessions
 var cookieParser = require('cookie-parser'); // Express uses a cookie to store a session ID, middleware which parses cookies attached to the client request object
 var flash = require('express-flash');
-var MongoStore = require('connect-mongo')(session); // MongoDB session store on server side, (session) is passing session object so app knows session is based on express session library
+var MongoStore = require('connect-mongo/es5')(session); // MongoDB session store on server side, (session) is passing session object so app knows session is based on express session library
 var passport = require('passport');
 
 var secret = require('./config/secret');
@@ -38,6 +38,9 @@ app.use(session({
   store: new MongoStore({ url: secret.database, autoReconnect: true })
 }));
 app.use(flash() );
+app.use(passport.initialize() );
+app.use(passport.session() );
+
 app.engine('ejs', engine);
 app.set('view engine', 'ejs'); // setting templating engine as ejs
 
